@@ -1,0 +1,43 @@
+{
+  "name": "my-library",
+  "version": "0.0.1",
+  "description": "Demo Library",
+  "author": "Someone",
+  "scripts": {
+    "build": "rollup --config"
+  },
+  "types": "types/index.d.ts",
+  "module": "lib/my-library.esm.js",
+  "files": [
+    "lib/**/*",
+    "src",
+    "types/index.d.ts"
+  ],
+  "dependencies": {
+    "core-js": "^2.6.5",
+    "vue": "^2.6.10",
+    "vue-class-component": "^7.0.2",
+    "vue-property-decorator": "^8.1.0",
+    "vue-router": "^3.0.6"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ],
+  "devDependencies": {
+    "@types/vue-router": "^2.0.0",
+    "rollup": "^1.11.3",
+    "rollup-plugin-commonjs": "^9.3.4",
+    "rollup-plugin-css-only": "^1.0.0",
+    "rollup-plugin-filesize": "^6.0.1",
+    "rollup-plugin-typescript": "^1.0.1",
+    "rollup-plugin-vue": "^5.0.0",
+    "tslib": "^1.9.3",
+    "typescript": "^3.4.5",
+    "vue-template-compiler": "^2.5.21"
+  },
+  "homepage": "https://whatever/",
+  "keywords": [],
+  "sideeffects": false
+}
