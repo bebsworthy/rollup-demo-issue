@@ -1,7 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
-import { Simple } from 'my-library'
+import { Simple } from 'my-library'  // the library build with rollup
+// import { Simple2 } from 'my-library-no-vue-class'
+// import { Simple3 } from 'library-no-ts'
 
 Vue.use(Router)
 
@@ -15,10 +17,20 @@ export default new Router({
       component: Home
     },
     {
-      path: '/problem',
-      name: 'problem',
+      path: '/simple',
+      name: 'simple',
       component: Simple
     },
+    // {
+    //   path: '/simple2',
+    //   name: 'simple2',
+    //   component: Simple2
+    // },
+    // {
+    //   path: '/simple3',
+    //   name: 'simple3',
+    //   component: Simple3
+    // },
     {
       path: '/about',
       name: 'about',

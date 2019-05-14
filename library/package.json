@@ -4,7 +4,8 @@
   "description": "Demo Library",
   "author": "Someone",
   "scripts": {
-    "build": "rollup --config"
+    "build": "rollup --config",
+    "watch": "rollup --watch --config"
   },
   "types": "types/index.d.ts",
   "module": "lib/my-library.esm.js",
@@ -29,6 +30,7 @@
     "@types/vue-router": "^2.0.0",
     "rollup": "^1.11.3",
     "rollup-plugin-commonjs": "^9.3.4",
+    "rollup-plugin-copy": "^2.0.1",
     "rollup-plugin-css-only": "^1.0.0",
     "rollup-plugin-filesize": "^6.0.1",
     "rollup-plugin-typescript": "^1.0.1",

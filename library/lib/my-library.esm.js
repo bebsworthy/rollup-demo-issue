@@ -14,20 +14,6 @@ MERCHANTABLITY OR NON-INFRINGEMENT.
 See the Apache Version 2.0 License for specific language governing permissions
 and limitations under the License.
 ***************************************************************************** */
-/* global Reflect, Promise */
-
-var extendStatics = function(d, b) {
-    extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return extendStatics(d, b);
-};
-
-function __extends(d, b) {
-    extendStatics(d, b);
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-}
 
 function __decorate(decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -36,28 +22,33 @@ function __decorate(decorators, target, key, desc) {
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 }
 
-var Simple = /** @class */ (function (_super) {
-    __extends(Simple, _super);
-    function Simple() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.state = 0;
-        return _this;
+let Simple = class Simple extends Vue {
+    constructor() {
+        super(...arguments);
+        this.state = 0;
+        this.routerMessage = '';
     }
-    Simple.prototype.push = function () {
+    push() {
         this.state++;
-    };
-    Simple.prototype.mounted = function () {
+    }
+    mounted() {
         if (!this.$router) {
             // vue-router is not passed here
-            console.error('[Simple] Vue Router is required but not installed');
-            return;
+            this.routerMessage = 'Vue Router is required but not installed. \
+      It could be because of double loading of the Vue library due to multiple \
+      `node_modules`. Make you you linked to the `publish` directory and not the \
+      library directory.';
         }
-    };
-    Simple = __decorate([
-        Component
-    ], Simple);
-    return Simple;
-}(Vue));
+        else {
+            this.routerMessage = 'Vue Router is installed. All working fine.';
+        }
+    }
+};
+Simple = __decorate([
+    Component
+], Simple);
+var script = Simple;
+//# sourceMappingURL=Simple.vue?rollup-plugin-vue=script.js.map
 
 function normalizeComponent(template, style, script, scopeId, isFunctionalTemplate, moduleIdentifier
 /* server only */
@@ -144,43 +135,101 @@ function normalizeComponent(template, style, script, scopeId, isFunctionalTempla
 
 var normalizeComponent_1 = normalizeComponent;
 
+var isOldIE = typeof navigator !== 'undefined' && /msie [6-9]\\b/.test(navigator.userAgent.toLowerCase());
+function createInjector(context) {
+  return function (id, style) {
+    return addStyle(id, style);
+  };
+}
+var HEAD = document.head || document.getElementsByTagName('head')[0];
+var styles = {};
+
+function addStyle(id, css) {
+  var group = isOldIE ? css.media || 'default' : id;
+  var style = styles[group] || (styles[group] = {
+    ids: new Set(),
+    styles: []
+  });
+
+  if (!style.ids.has(id)) {
+    style.ids.add(id);
+    var code = css.source;
+
+    if (css.map) {
+      // https://developer.chrome.com/devtools/docs/javascript-debugging
+      // this makes source maps inside style tags work properly in Chrome
+      code += '\n/*# sourceURL=' + css.map.sources[0] + ' */'; // http://stackoverflow.com/a/26603875
+
+      code += '\n/*# sourceMappingURL=data:application/json;base64,' + btoa(unescape(encodeURIComponent(JSON.stringify(css.map)))) + ' */';
+    }
+
+    if (!style.element) {
+      style.element = document.createElement('style');
+      style.element.type = 'text/css';
+      if (css.media) style.element.setAttribute('media', css.media);
+      HEAD.appendChild(style.element);
+    }
+
+    if ('styleSheet' in style.element) {
+      style.styles.push(code);
+      style.element.styleSheet.cssText = style.styles.filter(Boolean).join('\n');
+    } else {
+      var index = style.ids.size - 1;
+      var textNode = document.createTextNode(code);
+      var nodes = style.element.childNodes;
+      if (nodes[index]) style.element.removeChild(nodes[index]);
+      if (nodes.length) style.element.insertBefore(textNode, nodes[index]);else style.element.appendChild(textNode);
+    }
+  }
+}
+
+var browser = createInjector;
+
 /* script */
-const __vue_script__ = Simple;
+const __vue_script__ = script;
 
 /* template */
 var __vue_render__ = function() {
   var _vm = this;
   var _h = _vm.$createElement;
   var _c = _vm._self._c || _h;
-  return _c("div", { staticStyle: { border: "1px solid red" } }, [
-    _vm._v("\n    I am the `Simple` component from the library "),
+  return _c("div", { staticStyle: { border: "1px solid #c0c0c0" } }, [
+    _c("h1", [_vm._v("I am the `Simple` component from the library")]),
+    _vm._v(" "),
     _c("br"),
+    _vm._v(" "),
+    _c("h2", [_vm._v(" Reactivity test ")]),
     _vm._v("\n    " + _vm._s(_vm.state) + "\n    "),
     _c("button", { attrs: { type: "button" }, on: { click: _vm.push } }, [
-      _vm._v("push")
+      _vm._v("Don't push me")
     ]),
     _vm._v(" "),
-    _c("hr"),
-    _vm._v('\n    $router resolves to "' + _vm._s(_vm.$router) + '"\n    '),
-    _c("hr"),
-    _vm._v(
-      '\n    $myMixinProp resolves to "' + _vm._s(_vm.$myMixinProp) + '"\n'
-    )
+    _c("h2", [_vm._v(" Mixin test ")]),
+    _vm._v(" "),
+    _c("em", [_vm._v("$myMixinProp")]),
+    _vm._v(" resolves to:\n    "),
+    _c("pre", [_vm._v(_vm._s(_vm.$myMixinProp))]),
+    _vm._v(" "),
+    _c("h2", [_vm._v(" Router test ")]),
+    _vm._v(" "),
+    _c("pre", [_vm._v(_vm._s(_vm.routerMessage))])
   ])
 };
 var __vue_staticRenderFns__ = [];
 __vue_render__._withStripped = true;
 
   /* style */
-  const __vue_inject_styles__ = undefined;
+  const __vue_inject_styles__ = function (inject) {
+    if (!inject) return
+    inject("data-v-0b400d71_0", { source: "em[data-v-0b400d71] {\n  font-weight: bold;\n}\n\n/*# sourceMappingURL=Simple.vue.map */", map: {"version":3,"sources":["/Users/boyd/projects/tmp/rollup-demo/library/src/components/Simple.vue","Simple.vue"],"names":[],"mappings":"AAyCA;EACA,iBAAA;ACxCA;;AAEA,qCAAqC","file":"Simple.vue","sourcesContent":["<template>\n  <div style=\"border: 1px solid #c0c0c0\">\n      <h1>I am the `Simple` component from the library</h1> <br />\n      <h2> Reactivity test </h2>\n      {{ state }}\n      <button type=\"button\" v-on:click=\"push\">Don't push me</button>\n      \n      <h2> Mixin test </h2>\n      <em>$myMixinProp</em> resolves to:\n      <pre>{{ $myMixinProp }}</pre>\n      \n      <h2> Router test </h2>\n      <pre>{{routerMessage}}</pre>\n  </div>\n</template>\n\n<script lang=\"ts\">\nimport { Component, Prop, Vue } from 'vue-property-decorator';\n\n@Component\nexport default class Simple extends Vue {\n  public state: number = 0;\n  public routerMessage: string = '';\n\n  public push() {\n    this.state++;\n  }\n  public mounted() {\n    if (!this.$router) {\n      // vue-router is not passed here\n      this.routerMessage = 'Vue Router is required but not installed. \\\n      It could be because of double loading of the Vue library due to multiple \\\n      `node_modules`. Make you you linked to the `publish` directory and not the \\\n      library directory.';\n    } else {\n      this.routerMessage = 'Vue Router is installed. All working fine.';\n    }\n  }\n}\n</script>\n<style lang=\"scss\" scoped>\nem {\n  font-weight: bold;\n}\n</style>\n\n","em {\n  font-weight: bold;\n}\n\n/*# sourceMappingURL=Simple.vue.map */"]}, media: undefined });
+
+  };
   /* scoped */
-  const __vue_scope_id__ = undefined;
+  const __vue_scope_id__ = "data-v-0b400d71";
   /* module identifier */
   const __vue_module_identifier__ = undefined;
   /* functional template */
   const __vue_is_functional_template__ = false;
-  /* style inject */
-  
   /* style inject SSR */
   
 
@@ -192,23 +241,23 @@ __vue_render__._withStripped = true;
     __vue_scope_id__,
     __vue_is_functional_template__,
     __vue_module_identifier__,
-    undefined,
+    browser,
     undefined
   );
 
-var version = '__VERSION__';
-var install = function (Vue) {
+const version = '__VERSION__';
+const install = (Vue) => {
     /*
      * NOTE:
      *   if you need to extend Vue contstructor, you can extend it in here.
      */
     Vue.component('simple', Simple$1);
 };
-var plugin = {
-    install: install,
-    version: version
+const plugin = {
+    install,
+    version,
 };
+//# sourceMappingURL=index.js.map
 
 export default plugin;
 export { Simple$1 as Simple };
-//# sourceMappingURL=my-library.esm.js.map

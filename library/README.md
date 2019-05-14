@@ -5,7 +5,12 @@
 yarn install
 ```
 
-### Compiles and hot-reloads for development
+## Build the library
 ```
 yarn build
+```
+
+## Rebuild the library on change
+```
+yarn watch
 ```
