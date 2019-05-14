@@ -43,7 +43,7 @@ The modified files are :
 - src/router.ts (to add a route to the `Simple` component)
 - src/App.vue (to add a `router-link`)
 - src/main.ts (to add a mixin `beforeCreate`)
-- **vue.config.js**
+- **vue.config.js**  ⚠️
 
 ### vue.config.js
 
