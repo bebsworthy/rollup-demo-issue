@@ -25,4 +25,5 @@ lib/
 *.njsproj
 *.sln
 *.sw*
-  
+yarn-error.log
+yarn.lock
