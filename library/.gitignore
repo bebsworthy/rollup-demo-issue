@@ -6,6 +6,7 @@ dist/*.map
 coverage
 docs/.vuepress/dist
 publish/
+lib/
 
 # local env files
 .env.local
